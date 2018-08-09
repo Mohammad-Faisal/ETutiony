@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">ETutiony</string>
+    <string name="your_name">your name</string>
+    <string name="your_institution">your institution</string>
+    <string name="save">Save</string>
+    <string name="student">Student</string>
+    <string name="Teacher">Teacher</string>
+    <string name="Both">Both</string>
+    <string name="you_are_a">you are a</string>
+    <string name="description">description</string>
+    <string name="number_of_days">number of days</string>
+</resources>

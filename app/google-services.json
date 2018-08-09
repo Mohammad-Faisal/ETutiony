@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "262120522224",
+    "firebase_url": "https://etutiony.firebaseio.com",
+    "project_id": "etutiony",
+    "storage_bucket": "etutiony.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:262120522224:android:f48fbb252bc952b2",
+        "android_client_info": {
+          "package_name": "candor.example.com.etutiony"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "262120522224-9ofd3gekg387mqnu0gc3ttjdevffbvqm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "candor.example.com.etutiony",
+            "certificate_hash": "a6f8c5623318aa880824aac8c5e78b3a5936f3fe"
+          }
+        },
+        {
+          "client_id": "262120522224-b5dfp5g6d4atcm9b7b9i7265eo0dnjg0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_WoDj0pT1do1csefcHoeM4HIYrs9tP_4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "262120522224-b5dfp5g6d4atcm9b7b9i7265eo0dnjg0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
