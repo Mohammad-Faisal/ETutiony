@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -25,13 +23,7 @@ import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 import java.util.Objects;
-
-import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
     String mUserID , mUserName , mUserImage ,  mUserThumbImage;
     RecyclerView recyclerView;
     FirebaseFirestore firebaseFirestore;
-    ArrayList<TutionyItem> tutionyList = new ArrayList<>();
-    TutionyListAdapter tutionyListAdapter;
+    ArrayList<ExamItem> tutionyList = new ArrayList<>();
+    ExamListAdapter examListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
         tutionyList = new ArrayList<>();
         recyclerView.hasFixedSize();
         recyclerView.setLayoutManager(new GridLayoutManager(this , 1));
-        tutionyListAdapter = new TutionyListAdapter(tutionyList, this , this);
-        recyclerView.setAdapter(tutionyListAdapter);
+        examListAdapter = new ExamListAdapter(tutionyList, this , this);
+        recyclerView.setAdapter(examListAdapter);
 
         loadTutionys();
 
@@ -118,11 +110,11 @@ public class MainActivity extends AppCompatActivity {
                     for(DocumentChange doc: documentSnapshots.getDocumentChanges()){
                         if(doc.getType() == DocumentChange.Type.ADDED){
                             Log.d(TAG, "loadMorePost:    found some more data  !!!!!");
-                            TutionyItem singleTutiony = doc.getDocument().toObject(TutionyItem.class);
+                            ExamItem singleTutiony = doc.getDocument().toObject(ExamItem.class);
                             tutionyList.add(singleTutiony);
                         }
                     }
-                    tutionyListAdapter.notifyDataSetChanged();
+                    examListAdapter.notifyDataSetChanged();
                 }
             }
         });
