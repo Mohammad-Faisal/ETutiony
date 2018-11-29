@@ -2,42 +2,34 @@ package candor.example.com.etutiony;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddTutionyActivity extends AppCompatActivity {
+public class AddExamActivity extends AppCompatActivity {
 
     String mUserID;
-    EditText desc , days;
+    EditText name , number;
     FirebaseFirestore firebaseFirestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_tutiony);
+        setContentView(R.layout.activity_add_exam);
         firebaseFirestore = FirebaseFirestore.getInstance();
         mUserID = getIntent().getStringExtra("user_id");
-        desc = findViewById(R.id.desc);
-        days = findViewById(R.id.days);
+        name = findViewById(R.id.name);
+        number = findViewById(R.id.number_of_questions);
     }
 
     public void upload(View view) {
@@ -50,26 +42,26 @@ public class AddTutionyActivity extends AppCompatActivity {
             mProgress.setCanceledOnTouchOutside(false);
             mProgress.show();
 
-            String description = desc.getText().toString();
-            String dayNumber = days.getText().toString();
+            String nameString = name.getText().toString();
+            String numberString = number.getText().toString();
 
-            int num = Integer.valueOf(dayNumber);
+            int num = Integer.valueOf(numberString);
 
 
             Map< String, Object> tutionyMap = new HashMap<>();
             long timestamp = 1* new Date().getTime();
 
-            tutionyMap.put("description" , description);
-            tutionyMap.put("cycle" , num);
-            tutionyMap.put("current_days" , 0);
-            tutionyMap.put("time_stamp" , timestamp);
+            tutionyMap.put("name" , nameString);
+            tutionyMap.put("number_of_question" , num);
+            tutionyMap.put("correct_score" , 0);
+            tutionyMap.put("incorrect_score" , timestamp);
 
-            firebaseFirestore.collection("tutionys").document(mUserID).collection("tutionys").add(tutionyMap).addOnSuccessListener(documentReference -> {
+            firebaseFirestore.collection("exams").document(mUserID).collection("exams").add(tutionyMap).addOnSuccessListener(documentReference -> {
                 mProgress.dismiss();
                 finish();
             }).addOnFailureListener(e -> {
                 mProgress.dismiss();
-                Toast.makeText(AddTutionyActivity.this, "Some error occured ... please try again ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddExamActivity.this, "Some error occured ... please try again ", Toast.LENGTH_SHORT).show();
             });
 
 

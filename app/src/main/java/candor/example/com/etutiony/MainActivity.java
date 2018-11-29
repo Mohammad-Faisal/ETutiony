@@ -103,15 +103,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadTutionys(){
         firebaseFirestore = FirebaseFirestore.getInstance();
-        Query nextQuery = firebaseFirestore.collection("tutionys").document(mUserID).collection("tutionys").orderBy("time_stamp" , Query.Direction.DESCENDING).limit(100);
+        Query nextQuery = firebaseFirestore.collection("exams").document(mUserID).collection("exams").orderBy("time_stamp" , Query.Direction.DESCENDING).limit(100);
         nextQuery.get().addOnSuccessListener(documentSnapshots -> {
             if(documentSnapshots!=null){
                 if(!documentSnapshots.isEmpty()){
                     for(DocumentChange doc: documentSnapshots.getDocumentChanges()){
                         if(doc.getType() == DocumentChange.Type.ADDED){
                             Log.d(TAG, "loadMorePost:    found some more data  !!!!!");
-                            ExamItem singleTutiony = doc.getDocument().toObject(ExamItem.class);
-                            tutionyList.add(singleTutiony);
+                            ExamItem singleExam = doc.getDocument().toObject(ExamItem.class);
+                            tutionyList.add(singleExam);
                         }
                     }
                     examListAdapter.notifyDataSetChanged();
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openAddTutiony(View view) {
-        Intent intent = new Intent(MainActivity.this , AddTutionyActivity.class);
+        Intent intent = new Intent(MainActivity.this , AddExamActivity.class);
         intent.putExtra("user_id" , mUserID);
         startActivity(intent);
     }

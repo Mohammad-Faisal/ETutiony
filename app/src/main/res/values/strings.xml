@@ -8,5 +8,26 @@
     <string name="Both">Both</string>
     <string name="you_are_a">you are a</string>
     <string name="description">description</string>
-    <string name="number_of_days">number of days</string>
+    <string name="name">Exam Name</string>
+    <string name="number_of_question">Number of Question</string>
+
+
+    <string-array name="correct_score_arrays">
+        <item>correct score</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="incorrect_score_arrays">
+        <item>incorrect score</item>
+        <item>0.00</item>
+        <item>0.25</item>
+        <item>0.50</item>
+        <item>1.00</item>
+        <item>1.25</item>
+    </string-array>
+
 </resources>
