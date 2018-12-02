@@ -1,9 +1,11 @@
 package candor.example.com.etutiony;
 
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -23,7 +25,10 @@ import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,13 +41,18 @@ public class MainActivity extends AppCompatActivity {
     String mUserID , mUserName , mUserImage ,  mUserThumbImage;
     RecyclerView recyclerView;
     FirebaseFirestore firebaseFirestore;
-    ArrayList<ExamItem> tutionyList = new ArrayList<>();
+    ArrayList<ExamItem> examList = new ArrayList<ExamItem>();
     ExamListAdapter examListAdapter;
+    public static AppDatabase appDatabase;
+    Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        appDatabase = Room.databaseBuilder(this, AppDatabase.class , "ExamDao").build();
+
 
         mUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         recyclerView = findViewById(R.id.recycler);
@@ -90,28 +100,48 @@ public class MainActivity extends AppCompatActivity {
 
 
         //setting RecyclerView
-        tutionyList = new ArrayList<>();
         recyclerView.hasFixedSize();
         recyclerView.setLayoutManager(new GridLayoutManager(this , 1));
-        examListAdapter = new ExamListAdapter(tutionyList, this , this);
+        examListAdapter = new ExamListAdapter(examList, this , this);
         recyclerView.setAdapter(examListAdapter);
 
-        loadTutionys();
+        loadExamsOffline();
+
+        //loadExams();
 
     }
 
+    public void loadExamsOffline(){
+        new Thread(new Runnable() {
+            public void run() {
+                List<ExamItem> temp = appDatabase.examDao().getExams();
+                for(int i=0;i<temp.size();i++)examList.add(temp.get(i));
+                examListAdapter.notifyDataSetChanged();
+            }
+        }).start();
+    }
 
-    public void loadTutionys(){
+    public void loadExams(){
         firebaseFirestore = FirebaseFirestore.getInstance();
-        Query nextQuery = firebaseFirestore.collection("exams").document(mUserID).collection("exams").orderBy("time_stamp" , Query.Direction.DESCENDING).limit(100);
+        Query nextQuery = firebaseFirestore.collection("exams").document(mUserID).collection("exams").limit(100);
         nextQuery.get().addOnSuccessListener(documentSnapshots -> {
             if(documentSnapshots!=null){
                 if(!documentSnapshots.isEmpty()){
                     for(DocumentChange doc: documentSnapshots.getDocumentChanges()){
                         if(doc.getType() == DocumentChange.Type.ADDED){
-                            Log.d(TAG, "loadMorePost:    found some more data  !!!!!");
-                            ExamItem singleExam = doc.getDocument().toObject(ExamItem.class);
-                            tutionyList.add(singleExam);
+                            //ExamItem singleExam = doc.getDocument().toObject(ExamItem.class);
+                            ExamItem singleExam = new ExamItem.Builder().setName(doc.getDocument().getString("name"))
+                                    .setCorrectScore(doc.getDocument().getString("correct_score"))
+                                    .setCorrectScore(doc.getDocument().getString("incorrect_score"))
+                                    .setNumberOfQuestion(doc.getDocument().getString("number_of_question"))
+                                    .create();
+
+                            Timber.d("loadExams: %s", doc.getDocument().getString("name"));
+                            Timber.d("loadExams: %s", doc.getDocument().getString("correct_score"));
+                            Timber.d("loadExams: %s", doc.getDocument().getString("incorrect_score"));
+                            Timber.d("loadExams: %s", doc.getDocument().getString("number_of_question"));
+
+                            examList.add(singleExam);
                         }
                     }
                     examListAdapter.notifyDataSetChanged();
@@ -168,6 +198,11 @@ public class MainActivity extends AppCompatActivity {
         mAuth.removeAuthStateListener(mAuthStateListener);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //loadExamsOffline();
+    }
 
     private boolean isDataAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

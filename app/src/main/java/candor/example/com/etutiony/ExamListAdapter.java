@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ExamListAdapter extends RecyclerView.Adapter<ExamListAdapter.TutionyListViewHolder> {
 
@@ -34,10 +35,7 @@ public class ExamListAdapter extends RecyclerView.Adapter<ExamListAdapter.Tution
     @Override
     public void onBindViewHolder(@NonNull ExamListAdapter.TutionyListViewHolder holder, int position) {
         ExamItem item = list.get(position);
-
-       /* holder.description.setText(item.getClass().getName());
-        int remainingDays = item.getCycle() - item.getCurrent_days();
-        holder.days.setText(remainingDays + " days left");*/
+        holder.name.setText(item.getName());
     }
 
     @Override
@@ -46,12 +44,11 @@ public class ExamListAdapter extends RecyclerView.Adapter<ExamListAdapter.Tution
     }
 
     public class TutionyListViewHolder extends RecyclerView.ViewHolder {
-        TextView description , days;
+        TextView name , number;
 
         public TutionyListViewHolder(View itemView) {
             super(itemView);
-            description = itemView.findViewById(R.id.item_tutiony_description);
-            days = itemView.findViewById(R.id.item_tutiony_days);
+            name = itemView.findViewById(R.id.name);
         }
     }
 }
