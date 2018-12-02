@@ -1,4 +1,4 @@
-package candor.example.com.etutiony;
+package candor.example.com.etutiony.database;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
@@ -9,6 +9,7 @@ import android.arch.persistence.room.Update;
 import java.util.ArrayList;
 import java.util.List;
 
+import candor.example.com.etutiony.ExamItem;
 
 
 @Dao

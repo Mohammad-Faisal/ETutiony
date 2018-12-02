@@ -18,11 +18,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
+import candor.example.com.etutiony.database.AppDatabase;
 
 
 public class AddExamActivity extends AppCompatActivity {
